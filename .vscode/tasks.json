@@ -1,0 +1,21 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "start",
+			"path": "backend",
+			"problemMatcher": [],
+			"label": "npm: start - backend",
+			"detail": "node --experimental-json-modules src/index.js"
+		},
+		{
+			"type": "npm",
+			"script": "serve",
+			"path": "frontend",
+			"problemMatcher": [],
+			"label": "npm: serve - frontend",
+			"detail": "vue-cli-service serve"
+		}
+	]
+}
