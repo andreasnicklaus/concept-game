@@ -1,0 +1,474 @@
+[
+  {
+    "names": ["Objekt", "Verpackung", "Karton"],
+    "img_src": ""
+  },
+  {
+    "names": ["Familie", "Gesellschaft", "Gruppe"],
+    "img_src": ""
+  },
+  {
+    "names": ["Frau", "Weiblich"],
+    "img_src": ""
+  },
+  {
+    "names": ["Mann", "Männlich"],
+    "img_src": ""
+  },
+  {
+    "names": ["Arbeit", "Handwerk", "Karton"],
+    "img_src": ""
+  },
+  {
+    "names": ["Erholung", "Sport", "Aktivität"],
+    "img_src": ""
+  },
+  {
+    "names": ["Tierwelt", "Tier"],
+    "img_src": ""
+  },
+  {
+    "names": ["Pflanzenwelt", "Pflanze"],
+    "img_src": ""
+  },
+  {
+    "names": ["Literatur", "Schrift", "Buch"],
+    "img_src": ""
+  },
+  {
+    "names": ["Musik", "Lied", "Note"],
+    "img_src": ""
+  },
+  {
+    "names": ["Theater", "Film", "Kamera"],
+    "img_src": ""
+  },
+  {
+    "names": ["Kunst", "Bildhauerei / Malerei", "Zeichnen / Comics"],
+    "img_src": ""
+  },
+  {
+    "names": ["Fernsehen", "Rundfunk", "Serien"],
+    "img_src": ""
+  },
+  {
+    "names": ["Titel", "Marke"],
+    "img_src": ""
+  },
+  {
+    "names": ["Idee", "Gedanke", "Konzept"],
+    "img_src": ""
+  },
+  {
+    "names": ["Ausdruck / Zitat", "Sprechen", "Wort"],
+    "img_src": ""
+  },
+  {
+    "names": ["Ort", "Land", "Flagge"],
+    "img_src": ""
+  },
+  {
+    "names": ["Gebäude", "Bauwerk", "Stadt"],
+    "img_src": ""
+  },
+  {
+    "names": ["Datum", "Ereignis", "Tag"],
+    "img_src": ""
+  },
+  {
+    "names": ["Ferien", "Geburtstag", "Feiertag"],
+    "img_src": ""
+  },
+  {
+    "names": ["Wasserfahrzeug", "Meer", "Schwimmen"],
+    "img_src": ""
+  },
+  {
+    "names": ["Luftfahrzeug", "Fluglinie", "Fliegen"],
+    "img_src": ""
+  },
+  {
+    "names": ["Landfahrzeug", "Auto", "Fahren"],
+    "img_src": ""
+  },
+  {
+    "names": ["Werkzeuge"],
+    "img_src": ""
+  },
+  {
+    "names": ["Spiele", "Spielzeug"],
+    "img_src": ""
+  },
+  {
+    "names": ["Kleidung", "Accessoires", "Kostüm"],
+    "img_src": ""
+  },
+  {
+    "names": ["Essen", "Lebensmittel", "Essbares"],
+    "img_src": ""
+  },
+  {
+    "names": ["Wirklichkeit", "Geschichte"],
+    "img_src": ""
+  },
+  {
+    "names": ["Dichtung", "Imaginär"],
+    "img_src": ""
+  },
+  {
+    "names": ["Baby / Kind", "Jung", "Neu"],
+    "img_src": ""
+  },
+  {
+    "names": ["Erwachsen / Alt", "Antik", "Vergangenheit"],
+    "img_src": ""
+  },
+  {
+    "names": ["Langsam", "Schildkröte"],
+    "img_src": ""
+  },
+  {
+    "names": ["Schnell", "Lebhaft", "Hase"],
+    "img_src": ""
+  },
+  {
+    "names": ["Verteidigung", "Schutz", "Mauer"],
+    "img_src": ""
+  },
+  {
+    "names": ["Konflikt", "Waffen", "Kampf"],
+    "img_src": ""
+  },
+  {
+    "names": ["Leben", "Herz", "Liebe"],
+    "img_src": ""
+  },
+  {
+    "names": ["Tod", "Böse", "Krankheit"],
+    "img_src": ""
+  },
+  {
+    "names": ["Fröhlich", "Positiv"],
+    "img_src": ""
+  },
+  {
+    "names": ["Traurig", "Negativ"],
+    "img_src": ""
+  },
+  {
+    "names": ["Elektronik", "Computer"],
+    "img_src": ""
+  },
+  {
+    "names": ["Mechanik"],
+    "img_src": ""
+  },
+  {
+    "names": ["Geld", "Reich", "Teuer"],
+    "img_src": ""
+  },
+  {
+    "names": ["Zeit", "Dauer"],
+    "img_src": ""
+  },
+  {
+    "names": ["Zeit", "Dauer"],
+    "img_src": ""
+  },
+  {
+    "names": ["Religion", "Mystik", "Glaube"],
+    "img_src": ""
+  },
+  {
+    "names": ["Macht", "Politik"],
+    "img_src": ""
+  },
+  {
+    "names": ["Wissenschaft", "Mathematik", "Chemie"],
+    "img_src": ""
+  },
+  {
+    "names": ["Medizin", "Medikament", "Heilung"],
+    "img_src": ""
+  },
+  {
+    "names": ["Kopf", "Gesicht"],
+    "img_src": ""
+  },
+  {
+    "names": ["Arm", "Hand"],
+    "img_src": ""
+  },
+  {
+    "names": ["Körper", "Bauch"],
+    "img_src": ""
+  },
+  {
+    "names": ["Bein", "Fuß"],
+    "img_src": ""
+  },
+  {
+    "names": ["Ohr", "Klang", "Hören"],
+    "img_src": ""
+  },
+  {
+    "names": ["Nase", "Duft", "Geruch"],
+    "img_src": ""
+  },
+  {
+    "names": ["Auge", "Blick", "Schauen"],
+    "img_src": ""
+  },
+  {
+    "names": ["Mund", "Geschmack", "Essen"],
+    "img_src": ""
+  },
+  {
+    "names": ["Wolke", "Regen", "Schnee / Kalt"],
+    "img_src": ""
+  },
+  {
+    "names": ["Blitz / Elektrizität", "Sturm", "Wut"],
+    "img_src": ""
+  },
+  {
+    "names": ["Nacht", "Abend", "Mond"],
+    "img_src": ""
+  },
+  {
+    "names": ["Sonne", "Licht", "Tageszeit"],
+    "img_src": ""
+  },
+  {
+    "names": ["Feuer", "Brennen"],
+    "img_src": ""
+  },
+  {
+    "names": ["Wasser", "Flüssigkeit", "Nass"],
+    "img_src": ""
+  },
+  {
+    "names": ["Luft", "Wind", "Blasen"],
+    "img_src": ""
+  },
+  {
+    "names": ["Erde"],
+    "img_src": ""
+  },
+  {
+    "names": ["Stein", "Mineralien", "Hart"],
+    "img_src": ""
+  },
+  {
+    "names": ["Holz"],
+    "img_src": ""
+  },
+  {
+    "names": ["Metall"],
+    "img_src": ""
+  },
+  {
+    "names": ["Stoff"],
+    "img_src": ""
+  },
+  {
+    "names": ["Plastik", "Gummi"],
+    "img_src": ""
+  },
+  {
+    "names": ["Papier", "Blatt"],
+    "img_src": ""
+  },
+  {
+    "names": ["Gegensätzlich", "Gegenteil", "Invers"],
+    "img_src": ""
+  },
+  {
+    "names": ["Schneiden", "Getrennt", "Halb"],
+    "img_src": ""
+  },
+  {
+    "names": ["Bruchstück", "Menge", "Pulver"],
+    "img_src": ""
+  },
+  {
+    "names": ["Teil von", "Untermenge von", "Stück von"],
+    "img_src": ""
+  },
+  {
+    "names": ["Innenseite", "Innen"],
+    "img_src": ""
+  },
+  {
+    "names": ["Raster", "Netzwerk", "Gefängnis"],
+    "img_src": ""
+  },
+  {
+    "names": ["Null", "Nichts", "Nullpunkt"],
+    "img_src": ""
+  },
+  {
+    "names": ["Einheit", "Eins"],
+    "img_src": ""
+  },
+  {
+    "names": ["Gerade", "Glatt"],
+    "img_src": ""
+  },
+  {
+    "names": ["Kurve", "Bogen", "Rund"],
+    "img_src": ""
+  },
+  {
+    "names": ["Kreuz", "Kreuzung"],
+    "img_src": ""
+  },
+  {
+    "names": ["Gezackte Linie", "Scharf", "Rau"],
+    "img_src": ""
+  },
+  {
+    "names": ["Spirale", "Rausch / Wahnsinn", "Locke"],
+    "img_src": ""
+  },
+  {
+    "names": ["Sinusförmig", "Wellig", "Haar / Fluss"],
+    "img_src": ""
+  },
+  {
+    "names": ["Ring"],
+    "img_src": ""
+  },
+  {
+    "names": ["Kreis"],
+    "img_src": ""
+  },
+  {
+    "names": ["Dreieck"],
+    "img_src": ""
+  },
+  {
+    "names": ["Stern"],
+    "img_src": ""
+  },
+  {
+    "names": ["Rechteck", "Viereck"],
+    "img_src": ""
+  },
+  {
+    "names": ["Flach"],
+    "img_src": ""
+  },
+  {
+    "names": ["Würfel", "Backstein"],
+    "img_src": ""
+  },
+  {
+    "names": ["Kugel"],
+    "img_src": ""
+  },
+  {
+    "names": ["Pyramide"],
+    "img_src": ""
+  },
+  {
+    "names": ["Zylinder"],
+    "img_src": ""
+  },
+  {
+    "names": ["Kegel"],
+    "img_src": ""
+  },
+  {
+    "names": ["Aussparung", "Loch", "Durchbohrt"],
+    "img_src": ""
+  },
+  {
+    "names": ["Groß", "Größer", "Hoch"],
+    "img_src": ""
+  },
+  {
+    "names": ["Klein", "Tiefer", "Unten"],
+    "img_src": ""
+  },
+  {
+    "names": ["Riesig", "Breit", "Länger"],
+    "img_src": ""
+  },
+  {
+    "names": ["Schmal", "Nah", "Eng"],
+    "img_src": ""
+  },
+  {
+    "names": ["Spitze", "Nach Oben", "Aufsteigen"],
+    "img_src": ""
+  },
+  {
+    "names": ["Tief", "Runter", "Fallen"],
+    "img_src": ""
+  },
+  {
+    "names": ["Links", "Erster", "Vor"],
+    "img_src": ""
+  },
+  {
+    "names": ["Rechts", "Ende", "Nach"],
+    "img_src": ""
+  },
+  {
+    "names": ["Drehung", "Drumherum", "Kreis"],
+    "img_src": ""
+  },
+  {
+    "names": ["Benutzen / Aktivieren", "Machen / Handeln"],
+    "img_src": ""
+  },
+  {
+    "names": ["Rot"],
+    "img_src": ""
+  },
+  {
+    "names": ["Orange"],
+    "img_src": ""
+  },
+  {
+    "names": ["Gelb"],
+    "img_src": ""
+  },
+  {
+    "names": ["Grün"],
+    "img_src": ""
+  },
+  {
+    "names": ["Blau"],
+    "img_src": ""
+  },
+  {
+    "names": ["Lila"],
+    "img_src": ""
+  },
+  {
+    "names": ["Rosa"],
+    "img_src": ""
+  },
+  {
+    "names": ["Braun"],
+    "img_src": ""
+  },
+  {
+    "names": ["Schwarz"],
+    "img_src": ""
+  },
+  {
+    "names": ["Grau"],
+    "img_src": ""
+  },
+  {
+    "names": ["Weiß"],
+    "img_src": ""
+  },
+  {
+    "names": ["Klar", "Unsichtbar", "Glas"],
+    "img_src": ""
+  }
+]

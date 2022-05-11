@@ -1,4 +1,5 @@
 <template>
+  <p>{{this.$store.state.fields.length}}</p>
   <HelloWorld />
 </template>
 
@@ -14,5 +15,6 @@ export default defineComponent({
   components: {
     HelloWorld
   }
+
 })
 </script>
