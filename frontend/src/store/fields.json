@@ -1,263 +1,259 @@
 [
   {
     "names": ["Objekt", "Verpackung", "Karton"],
-    "img_src": ""
+    "img_src": "box"
   },
   {
     "names": ["Familie", "Gesellschaft", "Gruppe"],
-    "img_src": ""
+    "img_src": "family"
   },
   {
     "names": ["Frau", "Weiblich"],
-    "img_src": ""
+    "img_src": "woman"
   },
   {
     "names": ["Mann", "Männlich"],
-    "img_src": ""
+    "img_src": "man"
   },
   {
-    "names": ["Arbeit", "Handwerk", "Karton"],
-    "img_src": ""
+    "names": ["Arbeit", "Handwerk"],
+    "img_src": "work"
   },
   {
     "names": ["Erholung", "Sport", "Aktivität"],
-    "img_src": ""
+    "img_src": "sport"
   },
   {
     "names": ["Tierwelt", "Tier"],
-    "img_src": ""
+    "img_src": "dog"
   },
   {
     "names": ["Pflanzenwelt", "Pflanze"],
-    "img_src": ""
+    "img_src": "forest"
   },
   {
     "names": ["Literatur", "Schrift", "Buch"],
-    "img_src": ""
+    "img_src": "books"
   },
   {
     "names": ["Musik", "Lied", "Note"],
-    "img_src": ""
+    "img_src": "music"
   },
   {
     "names": ["Theater", "Film", "Kamera"],
-    "img_src": ""
+    "img_src": "film"
   },
   {
     "names": ["Kunst", "Bildhauerei / Malerei", "Zeichnen / Comics"],
-    "img_src": ""
+    "img_src": "art"
   },
   {
     "names": ["Fernsehen", "Rundfunk", "Serien"],
-    "img_src": ""
+    "img_src": "tv"
   },
   {
     "names": ["Titel", "Marke"],
-    "img_src": ""
+    "img_src": "stamp"
   },
   {
     "names": ["Idee", "Gedanke", "Konzept"],
-    "img_src": ""
+    "img_src": "idea"
   },
   {
     "names": ["Ausdruck / Zitat", "Sprechen", "Wort"],
-    "img_src": ""
+    "img_src": "speech"
   },
   {
     "names": ["Ort", "Land", "Flagge"],
-    "img_src": ""
+    "img_src": "location"
   },
   {
     "names": ["Gebäude", "Bauwerk", "Stadt"],
-    "img_src": ""
+    "img_src": "city"
   },
   {
     "names": ["Datum", "Ereignis", "Tag"],
-    "img_src": ""
+    "img_src": "date"
   },
   {
     "names": ["Ferien", "Geburtstag", "Feiertag"],
-    "img_src": ""
+    "img_src": "party"
   },
   {
     "names": ["Wasserfahrzeug", "Meer", "Schwimmen"],
-    "img_src": ""
+    "img_src": "boat"
   },
   {
     "names": ["Luftfahrzeug", "Fluglinie", "Fliegen"],
-    "img_src": ""
+    "img_src": "airplane"
   },
   {
     "names": ["Landfahrzeug", "Auto", "Fahren"],
-    "img_src": ""
+    "img_src": "car"
   },
   {
     "names": ["Werkzeuge"],
-    "img_src": ""
+    "img_src": "tools"
   },
   {
     "names": ["Spiele", "Spielzeug"],
-    "img_src": ""
+    "img_src": "game"
   },
   {
     "names": ["Kleidung", "Accessoires", "Kostüm"],
-    "img_src": ""
+    "img_src": "clothes"
   },
   {
     "names": ["Essen", "Lebensmittel", "Essbares"],
-    "img_src": ""
+    "img_src": "food"
   },
   {
     "names": ["Wirklichkeit", "Geschichte"],
-    "img_src": ""
+    "img_src": "history"
   },
   {
     "names": ["Dichtung", "Imaginär"],
-    "img_src": ""
+    "img_src": "imagination"
   },
   {
     "names": ["Baby / Kind", "Jung", "Neu"],
-    "img_src": ""
+    "img_src": "child"
   },
   {
     "names": ["Erwachsen / Alt", "Antik", "Vergangenheit"],
-    "img_src": ""
+    "img_src": "old"
   },
   {
     "names": ["Langsam", "Schildkröte"],
-    "img_src": ""
+    "img_src": "turtle"
   },
   {
     "names": ["Schnell", "Lebhaft", "Hase"],
-    "img_src": ""
+    "img_src": "rabbit"
   },
   {
     "names": ["Verteidigung", "Schutz", "Mauer"],
-    "img_src": ""
+    "img_src": "defense"
   },
   {
     "names": ["Konflikt", "Waffen", "Kampf"],
-    "img_src": ""
+    "img_src": "fight"
   },
   {
     "names": ["Leben", "Herz", "Liebe"],
-    "img_src": ""
+    "img_src": "love"
   },
   {
     "names": ["Tod", "Böse", "Krankheit"],
-    "img_src": ""
+    "img_src": "skull"
   },
   {
     "names": ["Fröhlich", "Positiv"],
-    "img_src": ""
+    "img_src": "happy"
   },
   {
     "names": ["Traurig", "Negativ"],
-    "img_src": ""
+    "img_src": "sad"
   },
   {
     "names": ["Elektronik", "Computer"],
-    "img_src": ""
+    "img_src": "laptop"
   },
   {
     "names": ["Mechanik"],
-    "img_src": ""
+    "img_src": "gears"
   },
   {
     "names": ["Geld", "Reich", "Teuer"],
-    "img_src": ""
+    "img_src": "money"
   },
   {
     "names": ["Zeit", "Dauer"],
-    "img_src": ""
-  },
-  {
-    "names": ["Zeit", "Dauer"],
-    "img_src": ""
+    "img_src": "time"
   },
   {
     "names": ["Religion", "Mystik", "Glaube"],
-    "img_src": ""
+    "img_src": "religion"
   },
   {
     "names": ["Macht", "Politik"],
-    "img_src": ""
+    "img_src": "power"
   },
   {
     "names": ["Wissenschaft", "Mathematik", "Chemie"],
-    "img_src": ""
+    "img_src": "science"
   },
   {
     "names": ["Medizin", "Medikament", "Heilung"],
-    "img_src": ""
+    "img_src": "medicine"
   },
   {
     "names": ["Kopf", "Gesicht"],
-    "img_src": ""
+    "img_src": "head"
   },
   {
     "names": ["Arm", "Hand"],
-    "img_src": ""
+    "img_src": "arm"
   },
   {
     "names": ["Körper", "Bauch"],
-    "img_src": ""
+    "img_src": "body"
   },
   {
     "names": ["Bein", "Fuß"],
-    "img_src": ""
+    "img_src": "leg"
   },
   {
     "names": ["Ohr", "Klang", "Hören"],
-    "img_src": ""
+    "img_src": "ear"
   },
   {
     "names": ["Nase", "Duft", "Geruch"],
-    "img_src": ""
+    "img_src": "nose"
   },
   {
     "names": ["Auge", "Blick", "Schauen"],
-    "img_src": ""
+    "img_src": "eyes"
   },
   {
     "names": ["Mund", "Geschmack", "Essen"],
-    "img_src": ""
+    "img_src": "mouth"
   },
   {
     "names": ["Wolke", "Regen", "Schnee / Kalt"],
-    "img_src": ""
+    "img_src": "cold"
   },
   {
     "names": ["Blitz / Elektrizität", "Sturm", "Wut"],
-    "img_src": ""
+    "img_src": "storm"
   },
   {
     "names": ["Nacht", "Abend", "Mond"],
-    "img_src": ""
+    "img_src": "moon"
   },
   {
     "names": ["Sonne", "Licht", "Tageszeit"],
-    "img_src": ""
+    "img_src": "sun"
   },
   {
     "names": ["Feuer", "Brennen"],
-    "img_src": ""
+    "img_src": "fire"
   },
   {
     "names": ["Wasser", "Flüssigkeit", "Nass"],
-    "img_src": ""
+    "img_src": "water"
   },
   {
     "names": ["Luft", "Wind", "Blasen"],
-    "img_src": ""
+    "img_src": "wind"
   },
   {
     "names": ["Erde"],
-    "img_src": ""
+    "img_src": "earth"
   },
   {
     "names": ["Stein", "Mineralien", "Hart"],
-    "img_src": ""
+    "img_src": "stone"
   },
   {
     "names": ["Holz"],

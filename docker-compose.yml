@@ -1,0 +1,22 @@
+version: '3'
+services:
+  client:
+    build: frontend
+    ports:
+      - "80:80"
+    networks:
+      - nginx_proxy
+    depends_on:
+      - server
+
+  server:
+    build: backend
+    ports:
+      - "8080:8080"
+    networks:
+      - nginx_proxy
+
+networks:
+  nginx_proxy:
+    external: true
+    
