@@ -1,8 +1,8 @@
-import { WebSocketServer } from "ws";
-import {v4 as uuidv4} from "uuid"
-import {handleMessage} from "./roomController.js";
+const { WebSocketServer } = require("ws");
+const { v4: uuidv4 } = require("uuid");
+const { handleMessage } = require("./roomController.js");
 
-const wss = new WebSocketServer({port: 8080})
+const wss = new WebSocketServer({ port: 8080 })
 
 wss.on('connection', ws => {
     const uuid = uuidv4();

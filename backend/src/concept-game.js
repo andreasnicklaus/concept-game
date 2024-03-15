@@ -1,11 +1,11 @@
-import words from "./words.json";
+const words = require("./words.json");
 // TODO: Add more words
-export class ConceptGame {
+module.exports.ConceptGame = class {
     currentPlayerIndex;
     playerList = {};
     stones = {};
     currentWord;
-    messages= []
+    messages = []
 
     addPlayer = (uuid, playerInfo) => {
         this.playerList[uuid] = { ...playerInfo, points: 0 }
@@ -53,7 +53,7 @@ export class ConceptGame {
             this.playerList[uuid].points += 2
             this.playerList[Object.keys(this.playerList)[this.currentPlayerIndex]].points += 1
         }
-        this.messages.push({ text: tip, sender: this.playerList[uuid].name, correct: isCorrect})
+        this.messages.push({ text: tip, sender: this.playerList[uuid].name, correct: isCorrect })
         return isCorrect
     }
 }

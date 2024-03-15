@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from "uuid";
-import { ConceptGame } from "./concept-game.js";
+const { v4: uuidv4 } = require("uuid");
+const { ConceptGame } = require("./concept-game.js");
 let rooms = {}
 
 function getRoomCode(uuid_given) {
@@ -28,7 +28,7 @@ function sendOutNextWord(roomCode) {
     socket.send(JSON.stringify({ type: "nextWord", word: game.currentWord }))
 }
 
-export function handleMessage(socket, uuid, data) {
+module.exports.handleMessage = function (socket, uuid, data) {
     console.log("Message from", uuid)
     data = JSON.parse(data)
     console.log("Got message", JSON.stringify(data))
