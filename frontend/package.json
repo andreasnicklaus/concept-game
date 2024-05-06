@@ -16,7 +16,7 @@
     "core-js": "^3.36.0",
     "eslint-plugin-vue": "^9.23.0",
     "roboto-fontface": "*",
-    "vue": "^3.4.21",
+    "vue": "^3.4.22",
     "vue-cli-plugin-vuetify": "~2.5.8",
     "vue-router": "^4.3.0",
     "vuetify": "^3.5.9",
