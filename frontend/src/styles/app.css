@@ -66,6 +66,13 @@
   color: var(--color-muted);
 }
 
+.brand__icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  color: var(--color-accent);
+}
+
 .app-nav {
   display: flex;
   align-items: center;
