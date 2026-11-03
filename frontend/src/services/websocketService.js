@@ -1,8 +1,13 @@
 import store from "@/store"
 import gameService from "./gameService"
 
+const isProduction = process.env.NODE_ENV === "production"
+const host = isProduction
+  ? `wss://api.concept.andreasnicklaus.de/ws`
+  : `ws://localhost:8080/ws`
+
 class WebsocketService {
-  ws = new WebSocket(`wss://${window.location.hostname}/ws`, ['websocket'])
+  ws = new WebSocket(host, ['websocket'])
 
   constructor () {
     this.ws.onmessage = (msg) => {

@@ -290,8 +290,9 @@ button.field-tile:active { translate: 3px 4px; rotate: 0deg; box-shadow: var(--s
 .field-tile__names span { overflow-wrap: break-word; }
 .field-tile__stones { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2xs); min-height: 14px; }
 
+.stone-pin { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-3xs); }
 .stone { display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: var(--stone, var(--color-ink)); }
-.stone--major { width: 16px; height: 16px; rotate: 45deg; border-radius: 2px; }
+.stone--major { width: 16px; height: 16px; rotate: 45deg; border-radius: 2px; margin: var(--space-2xs); }
 .stone--green { --stone: var(--color-stone-green); }
 .stone--black { --stone: var(--color-stone-black); }
 .stone--blue { --stone: var(--color-stone-blue); }
