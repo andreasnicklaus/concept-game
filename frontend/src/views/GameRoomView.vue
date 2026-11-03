@@ -1,236 +1,236 @@
 <template>
-  <div v-if="$store.state.playerName && $store.state.roomCode">
-    <div v-if="$store.state.currentPlayerIndex != null">
+  <div v-if="joined" class="game">
+    <template v-if="gameReady">
+      <header class="game-top">
+        <div class="game-turn">
+          <p class="tag tag--pink">{{ isMyTurn ? 'Du gibst die Hinweise' : 'Rate mit' }}</p>
+          <h1>{{ turnTitle }}</h1>
+          <p class="game-turn__hint">{{ turnHint }}</p>
+        </div>
 
-      <!-- player top bar -->
-      <v-container>
-        <v-row dense align="center">
-          <v-col cols="12" :sm="12 / $store.state.players.length" v-for="(player, i) in $store.state.players" :key="i">
-            <v-card :color="player.name === $store.state.players[$store.state.currentPlayerIndex].name ? 'primary': ''">
-              <v-card-title>
-                <span>{{player.name}}</span>
-                <v-spacer></v-spacer>
-                <span>{{player.points}}</span>
-              </v-card-title>
-            </v-card>
-          </v-col>
-        </v-row>
+        <div class="score-row" role="list" aria-label="Punktestand">
+          <PlayerChip
+            v-for="(player, index) in players"
+            :key="player.name"
+            role="listitem"
+            :player="player"
+            :active="index === currentPlayerIndex"
+            :is-you="player.name === playerName"
+          />
+        </div>
+      </header>
 
-      </v-container>
+      <div class="game-body">
+        <aside class="game-meta">
+          <section class="panel" aria-labelledby="hints-title">
+            <h2 id="hints-title" class="panel__title">Gelegte Hinweise</h2>
+            <ul v-if="hints.length" class="hint-list">
+              <li v-for="field in hints" :key="field.index" class="hint-row">
+                <span class="hint-row__names">
+                  <span v-for="name in field.names" :key="name">{{ name }}</span>
+                </span>
+                <StonePin :stones="field.stones" :label="field.names.join(', ')" />
+              </li>
+            </ul>
+            <p v-else class="panel__empty">
+              Noch keine Steine auf dem Brett.
+            </p>
+          </section>
 
-      <v-divider></v-divider>
+          <section class="panel" aria-labelledby="messages-title">
+            <h2 id="messages-title" class="panel__title">Nachrichten</h2>
 
-      <!-- game area -->
-      <v-container>
-        <v-row>
-          <!-- meta area -->
-          <v-col cols="12" md="4">
-            <v-container class="ma-2">
-              <v-row justify="space-around">
-                <v-col v-for="(field, i) in $store.getters.fieldsWithStonesSet" :key="i">
-                  <v-card>
-                    <v-card-text>
-                      <v-row align="center">
-                        <v-col>
-                          <p v-for="(name, j) in field.names" :key="j">{{name}}</p>
-                        </v-col>
-                        <v-col>
-                          <p v-for="(stoneSet, color) in field.stones" :key="i + color">
-                            <v-chip v-if="stoneSet.major" :color="color"><v-icon>mdi-help-box</v-icon></v-chip>
-                            <v-icon v-for="minor in stoneSet.minors" :key="i + color + minor" :color="color">mdi-help-rhombus</v-icon>
-                          </p>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
-              </v-row>
-            </v-container>
+            <form v-if="!isMyTurn" class="guess-form" @submit.prevent="send">
+              <label class="visually-hidden" for="guess">Dein Tipp</label>
+              <input
+                id="guess"
+                v-model="tip"
+                class="field__input"
+                type="text"
+                name="guess"
+                placeholder="Dein Tipp"
+                autocomplete="off"
+                maxlength="80"
+                @keydown.esc="tip = ''"
+              />
+              <button class="btn btn--sm" type="submit" :disabled="!tip.trim()">
+                Senden
+              </button>
+            </form>
+            <p v-else class="panel__empty">
+              Du legst die Hinweise. Die anderen raten.
+            </p>
 
-            <!-- guesses -->
-            <v-container class="ma-2">
-              <v-card id="guesses">
-                <v-card-title>Nachrichten</v-card-title>
+            <ul v-if="messages.length" class="messages" aria-live="polite">
+              <li
+                v-for="(message, index) in messages"
+                :key="index"
+                class="message"
+                :class="{ 'message--system': !message.sender, 'message--correct': message.correct }"
+              >
+                <span class="message__sender">
+                  {{ message.sender || 'System' }}
+                  <span v-if="message.correct" class="tag tag--lime">richtig</span>
+                </span>
+                <span class="message__text">{{ message.text }}</span>
+              </li>
+            </ul>
+            <p v-else class="panel__empty">Noch keine Nachrichten.</p>
 
-                <!-- guess input -->
-                <v-container>
-                  <v-text-field v-model="tip" label="Your guess" append-icon="mdi-send"
-                  @click:append="send" @keyup.enter="send" @keyup.escape="this.tip = ''"
-                  clearable type="text" color="primary" hide-details
-                  :disabled="$store.getters.isMyTurn"></v-text-field>
-                </v-container>
+            <button class="btn btn--danger btn--sm" type="button" @click="leave">
+              Spiel verlassen
+            </button>
+          </section>
+        </aside>
 
-                <!-- message list -->
-                <v-container id="msg-list">
-                  <v-row justify="space-between" align="center" v-for="(message, i) in $store.state.messages.slice(-50).reverse()" :key="i">
-                    <v-col>
-                      {{message.sender}}
-                      <v-chip v-if="message.correct" label color="success">Korrekt</v-chip>
-                      <v-chip v-if="!message.sender" label color="default">System</v-chip>
-                    </v-col>
-                    <v-col cols="auto" style="text-align: right;">{{message.text}}</v-col>
-                  </v-row>
-                </v-container>
+        <section class="game-board" aria-labelledby="board-title">
+          <h2 id="board-title" class="board-title">Begriffsfelder</h2>
+          <p class="board-hint">
+            {{ isMyTurn ? 'Tippe ein Feld an, um Steine zu setzen.' : 'Die Steine zeigen die Hinweise des Hinweisgebers.' }}
+          </p>
 
-                <v-container>
-                  <v-btn color="error" variant="text" append-icon="mdi-close-circle-outline" @click="leave">Leave</v-btn>
-                </v-container>
-              </v-card>
-            </v-container>
-          </v-col>
+          <div class="board-grid">
+            <FieldTile
+              v-for="field in fields"
+              :key="field.index"
+              :field="field"
+              :interactive="isMyTurn"
+              @select="openStoneSettingDialog"
+            />
+          </div>
+        </section>
+      </div>
+    </template>
 
-          <!-- fields -->
-          <v-col cols="12" md="8">
-            <v-container>
-              <v-row>
-                <v-col class="align-self-end" cols="12" sm="6" md="4" lg="3"  v-for="(field, i) in $store.getters.fieldsWithStones" :key="i">
+    <EmptyState
+      v-else
+      inline
+      title="Das Spiel startet"
+      text="Die Runde wird vorbereitet. Das Brett erscheint, sobald die erste Person ein Wort bekommt."
+    >
+      <div class="spinner" aria-hidden="true" />
+      <span class="visually-hidden">Lädt</span>
+    </EmptyState>
 
-                  <!-- Clickable card if isMyTurn -->
-                  <v-card v-if="$store.getters.isMyTurn" class="v-btn v-btn--elevated field-card" @click="openStoneSettingDialog(field)">
-                    <div class="v-btn__overlay"></div>
-                    <div class="v-btn__underlay"></div>
-                    <v-card-text>
-                      <v-row align="center" justify="space-between">
-                        <v-col>
-                          <v-img max-height="100" max-width="100" :src="`/fieldIMGs/${field.img_src}.png`"></v-img>
-                        </v-col>
-                        <v-col justify="center" align="center">
-                          <p v-for="(name, j) in field.names" :key="j">{{name}}</p>
-                        </v-col>
-                        <v-col>
-                          <p v-for="(stoneSet, color) in field.stones" :key="i + color">
-                            <v-chip v-if="stoneSet.major" :color="color"><v-icon large>mdi-help-box</v-icon></v-chip>
-                            <v-icon v-for="minor in stoneSet.minors" :key="i + color + minor" :color="color">mdi-help-rhombus</v-icon>
-                          </p>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-
-                  <!-- Non-clickable card -->
-                  <v-card v-else>
-                    <v-card-text>
-                      <v-row align="center">
-                        <v-col>
-                          <p v-for="(name, j) in field.names" :key="j">{{name}}</p>
-                        </v-col>
-                        <v-col>
-                          <p v-for="(stoneSet, color) in field.stones" :key="i + color">
-                            <v-chip v-if="stoneSet.major" :color="color"><v-icon large>mdi-help-box</v-icon></v-chip>
-                            <v-icon v-for="minor in stoneSet.minors" :key="i + color + minor" :color="color">mdi-help-rhombus</v-icon>
-                          </p>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-col>
-        </v-row>
-      </v-container>
-
-      <!-- Your turn dialog -->
-      <v-dialog v-model="$store.state.yourTurnDialogOpen" width="500">
-        <YourTurnDialog @close="$store.commit('setYourTurnDialogOpen', false)"></YourTurnDialog>
-      </v-dialog>
-
-      <!-- Setting stones dialog -->
-      <v-dialog v-model="stoneSettingDialog">
-        <StoneSettingDialog :field="field" @close="stoneSettingDialog = false"/>
-      </v-dialog>
-    </div>
-
-    <div v-else id="gameloading">
-      <v-progress-circular
-      indeterminate
-      :size="70"
-      :width="7"
-      color="primary"/>
-    </div>
+    <YourTurnDialog v-model="yourTurnOpen" />
+    <StoneSettingDialog v-model="stoneSettingDialog" :field="selectedField" />
   </div>
 
-  <div v-else id="roomNotInitialised">
-    <div class="ma-8">
-      <h1>Oops, this didn't work... 😥</h1>
-      <p>This is supposed to be the game room, but something didn't work. Your can try to fix this by starting over:</p>
-      <v-btn color="primary" class="ma-2" to="/" prepend-icon="mdi-arrow-right">Go back</v-btn>
-    </div>
-  </div>
+  <EmptyState
+    v-else
+    title="Kein Spiel geladen"
+    text="Diese Seite ist der Spielraum, aber Name oder Raumcode sind nicht gesetzt. Starte von der Startseite ein neues Spiel oder tritt einem bei."
+  >
+    <RouterLink class="btn btn--primary" to="/">Zur Startseite</RouterLink>
+  </EmptyState>
 </template>
 
 <script>
 import gameService from '@/services/gameService'
-import YourTurnDialog from '@/components/YourTurnDialog'
+import YourTurnDialog from '@/components/YourTurnDialog.vue'
 import StoneSettingDialog from '@/components/StoneSettingDialog.vue'
+import FieldTile from '@/components/FieldTile.vue'
+import StonePin from '@/components/StonePin.vue'
+import PlayerChip from '@/components/PlayerChip.vue'
+import EmptyState from '@/components/EmptyState.vue'
 
 export default {
   name: 'GameRoomView',
 
   components: {
     YourTurnDialog,
-    StoneSettingDialog
-  },
-
-  unmounted () {
-    gameService.leave()
+    StoneSettingDialog,
+    FieldTile,
+    StonePin,
+    PlayerChip,
+    EmptyState
   },
 
   data () {
     return {
-      tip: "",
+      tip: '',
       stoneSettingDialog: false,
       selectedField: null
     }
   },
 
+  computed: {
+    playerName () {
+      return this.$store.state.playerName
+    },
+    roomCode () {
+      return this.$store.state.roomCode
+    },
+    players () {
+      return this.$store.state.players
+    },
+    currentPlayerIndex () {
+      return this.$store.state.currentPlayerIndex
+    },
+    currentPlayer () {
+      return this.players[this.currentPlayerIndex] || null
+    },
+    isMyTurn () {
+      return this.$store.getters.isMyTurn
+    },
+    fields () {
+      return this.$store.getters.fieldsWithStones
+    },
+    hints () {
+      return this.$store.getters.fieldsWithStonesSet.filter(field =>
+        Object.values(field.stones).some(stone => stone.major || stone.minors > 0)
+      )
+    },
+    messages () {
+      return this.$store.state.messages.slice(-50).reverse()
+    },
+    yourTurnOpen: {
+      get () {
+        return this.$store.state.yourTurnDialogOpen
+      },
+      set (value) {
+        this.$store.commit('setYourTurnDialogOpen', value)
+      }
+    },
+    joined () {
+      return Boolean(this.playerName && this.roomCode)
+    },
+    gameReady () {
+      return this.players.length > 0 && this.currentPlayer !== null
+    },
+    turnTitle () {
+      if (this.isMyTurn) return 'Du bist dran'
+      if (this.currentPlayer) return `${this.currentPlayer.name} ist dran`
+      return 'Gleich geht es los'
+    },
+    turnHint () {
+      if (this.isMyTurn) {
+        return 'Tippe auf ein Begriffsfeld, um Steine zu setzen. Grün ist die wichtigste Farbe.'
+      }
+      return 'Tippe in den Nachrichten, was du vermutest. Escape leert das Feld.'
+    }
+  },
+
+  beforeUnmount () {
+    gameService.leave()
+  },
+
   methods: {
     send () {
-      if (this.tip) {
-        gameService.guess(this.tip)
-        this.tip = ""
-      }
+      const tip = this.tip.trim()
+      if (!tip) return
+      gameService.guess(tip)
+      this.tip = ''
     },
 
     openStoneSettingDialog (field) {
-      this.field = field
+      this.selectedField = field
       this.stoneSettingDialog = true
     },
 
     leave () {
-      gameService.leave()
       this.$router.push('/')
     }
   }
 }
 </script>
-
-<style>
-#roomNotInitialised {
-  display: grid;
-  place-items: center;
-  height: 100%;
-  text-align: center;
-}
-
-#gameloading {
-  display: grid;
-  place-items: center;
-  height: 60vh;
-  text-align: center;
-}
-
-.v-text-field i:hover {
-  cursor: pointer
-}
-
-#msg-list {
-  max-height: 60vh;
-  overflow-y: scroll;
-}
-
-.field-card:hover {
-  cursor: pointer;
-}
-
-</style>

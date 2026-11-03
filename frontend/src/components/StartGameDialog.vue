@@ -1,22 +1,90 @@
 <template>
-  <v-card>
-    <v-card-title>Neues Spiel starten:</v-card-title>
-    <v-card-text>
-      <p>Um ein neues Spiel zu starten, musst du dir einen Namen geben. Dein Name ist öffentlich für alle Spieler im selben Raum.</p>
+  <BaseDialog v-model="open" title="Neues Spiel">
+    <form id="start-game-form" class="field" @submit.prevent="submit">
+      <label class="field__label" for="start-name">Dein Name</label>
+      <input
+        id="start-name"
+        v-model="name"
+        class="field__input"
+        name="playerName"
+        type="text"
+        autocomplete="nickname"
+        maxlength="20"
+        autofocus
+        :aria-invalid="showError && !valid"
+        aria-describedby="start-name-help"
+      />
+      <p id="start-name-help" class="field__help">
+        So sehen dich die anderen im Raum. Ein bis zwanzig Zeichen.
+      </p>
+      <p v-if="showError && !valid" class="field__error" role="alert">
+        Schreib zuerst einen Namen.
+      </p>
+    </form>
 
-      <v-text-field class="mt-2" label="Dein Name" v-model="$store.state.playerName"></v-text-field>
-    </v-card-text>
-
-    <v-card-actions>
-      <v-spacer/>
-      <v-btn color="primary" text @click="$emit('close')">Abbrechen</v-btn>
-      <v-btn color="primary" variant="contained" @click="$emit('start')" :disabled="!Boolean($store.state.playerName)">Start</v-btn>
-    </v-card-actions>
-  </v-card>
+    <template #actions>
+      <button class="btn btn--quiet" type="button" @click="close">Abbrechen</button>
+      <button class="btn btn--primary" type="submit" form="start-game-form" :disabled="!valid">
+        Raum öffnen
+      </button>
+    </template>
+  </BaseDialog>
 </template>
 
 <script>
+import BaseDialog from './BaseDialog.vue'
+
 export default {
-  name: "StartGameDialog"
+  name: 'StartGameDialog',
+
+  components: { BaseDialog },
+
+  props: {
+    modelValue: { type: Boolean, default: false }
+  },
+
+  emits: ['update:modelValue', 'start'],
+
+  data () {
+    return {
+      showError: false
+    }
+  },
+
+  computed: {
+    open: {
+      get () {
+        return this.modelValue
+      },
+      set (value) {
+        this.$emit('update:modelValue', value)
+      }
+    },
+    name: {
+      get () {
+        return this.$store.state.playerName
+      },
+      set (value) {
+        this.$store.commit('setPlayerName', value)
+      }
+    },
+    valid () {
+      return this.name.trim().length > 0
+    }
+  },
+
+  methods: {
+    close () {
+      this.showError = false
+      this.open = false
+    },
+    submit () {
+      this.showError = true
+      if (!this.valid) return
+      this.$store.commit('setPlayerName', this.name.trim())
+      this.open = false
+      this.$emit('start')
+    }
+  }
 }
 </script>

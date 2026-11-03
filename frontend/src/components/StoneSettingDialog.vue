@@ -1,68 +1,144 @@
 <template>
-  <v-card>
-    <v-card-title>Spielsteine platzieren:</v-card-title>
-    <v-card-subtitle>Wähle die Spielsteine, die du hier platzieren willst: {{field.names.join(', ')}}</v-card-subtitle>
-    <v-card-text>
-      <v-list active-strategy="">
-        <v-list-item v-for="color in Object.keys(stones)" :key="color" :value="color">
-            <v-list-item-avatar >
-              <v-checkbox v-model="stones[color].major" hide-details :color="color"></v-checkbox>
-            </v-list-item-avatar>
+  <BaseDialog v-model="open" title="Steine platzieren">
+    <p class="dialog__note">
+      Für «{{ (field && field.names) ? field.names.join(', ') : '' }}».
+      <span v-if="field && field.img_src" class="visually-hidden">
+        Feld mit Bild {{ field.img_src }}.
+      </span>
+    </p>
 
-            <v-list-item-header>
-              <v-chip label :color="color">
-                <v-icon>{{color === "green"? 'mdi-alert-rhombus': 'mdi-help-rhombus'}}</v-icon>
-              </v-chip>
-            </v-list-item-header>
-        </v-list-item>
-      </v-list>
+    <div class="stone-setter">
+      <div
+        v-for="color in colors"
+        :key="color"
+        class="stone-row"
+      >
+        <span class="stone-row__name">
+          <span class="swatch" :class="`swatch--${color}`" aria-hidden="true" />
+          {{ colorLabel(color) }}
+        </span>
 
-      <v-container>
-        <v-slider v-for="color in Object.keys(stones)" :key="color"
-          step="1" min="0" max="5" thumb-label="always" :thumb-color="color"
-          :color="color" v-model="stones[color].minors"></v-slider>
-      </v-container>
-    </v-card-text>
+        <label class="check">
+          <input
+            type="checkbox"
+            v-model="stones[color].major"
+            :aria-label="`Hauptstein ${colorLabel(color)}`"
+          />
+          Hauptstein
+        </label>
 
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn @click="close">Abbrechen</v-btn>
-      <v-btn @click="save" variant="contained" color="primary">Speichern</v-btn>
-    </v-card-actions>
-  </v-card>
+        <div class="stepper" role="group" :aria-label="`Anzahl Steine ${colorLabel(color)}`">
+          <button
+            class="stepper__btn"
+            type="button"
+            aria-label="Einen Stein weniger"
+            :disabled="stones[color].minors <= 0"
+            @click="stones[color].minors = Math.max(0, stones[color].minors - 1)"
+          >
+            −
+          </button>
+          <span class="stepper__value" aria-live="polite">{{ stones[color].minors }}</span>
+          <button
+            class="stepper__btn"
+            type="button"
+            aria-label="Einen Stein mehr"
+            :disabled="stones[color].minors >= 5"
+            @click="stones[color].minors = Math.min(5, stones[color].minors + 1)"
+          >
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <template #actions>
+      <button class="btn btn--quiet" type="button" @click="close">Abbrechen</button>
+      <button class="btn btn--primary" type="button" @click="save">Speichern</button>
+    </template>
+  </BaseDialog>
 </template>
 
 <script>
+import BaseDialog from './BaseDialog.vue'
 import gameService from '@/services/gameService'
 
-export default {
-  name: "StoneSettingDialog",
+const COLOR_ORDER = ['green', 'black', 'blue', 'red', 'yellow']
+const COLOR_LABELS = {
+  green: 'Grün',
+  black: 'Schwarz',
+  blue: 'Blau',
+  red: 'Rot',
+  yellow: 'Gelb'
+}
 
-  props: ['field'],
+function emptyStones () {
+  return COLOR_ORDER.reduce((stones, color) => {
+    stones[color] = { major: false, minors: 0 }
+    return stones
+  }, {})
+}
+
+export default {
+  name: 'StoneSettingDialog',
+
+  components: { BaseDialog },
+
+  props: {
+    modelValue: { type: Boolean, default: false },
+    field: { type: Object, default: null }
+  },
+
+  emits: ['update:modelValue'],
 
   data () {
     return {
-      stones: {
-        green: { major: false, minors: 0 },
-        black: { major: false, minors: 0 },
-        blue: { major: false, minors: 0 },
-        red: { major: false, minors: 0 },
-        yellow: { major: false, minors: 0 }
-      }
+      stones: emptyStones()
     }
   },
 
-  beforeMount () {
-    this.stones = this.$store.getters.getStonesForField(this.field)
+  computed: {
+    open: {
+      get () {
+        return this.modelValue
+      },
+      set (value) {
+        this.$emit('update:modelValue', value)
+      }
+    },
+    colors () {
+      return COLOR_ORDER
+    }
+  },
+
+  watch: {
+    modelValue (value) {
+      if (value) this.load()
+    },
+    field () {
+      if (this.modelValue) this.load()
+    }
   },
 
   methods: {
-    close () {
-      this.$emit('close')
+    colorLabel (color) {
+      return COLOR_LABELS[color]
     },
-
+    load () {
+      if (!this.field) return
+      this.stones = this.$store.getters.getStonesForField(this.field)
+    },
+    close () {
+      this.open = false
+    },
     save () {
-      this.$store.commit('saveStones', { stones: this.stones, field: this.field })
+      if (!this.field) {
+        this.close()
+        return
+      }
+      this.$store.commit('saveStones', {
+        stones: this.stones,
+        fieldIndex: this.field.index
+      })
       gameService.updateStones()
       this.close()
     }

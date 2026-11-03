@@ -3,13 +3,18 @@ export default {
     state.snackbar.show = false
   },
 
+  setPlayerName (state, playerName) {
+    state.playerName = playerName
+  },
+
   openSnackbar (state, message) {
     state.snackbar.text = message
     state.snackbar.show = true
   },
 
   changeReadyStatus (state, { playerName, newStatus }) {
-    state.players.find(player => player.name === playerName).ready = newStatus
+    const player = state.players.find(player => player.name === playerName)
+    if (player) player.ready = newStatus
   },
 
   setPlayers (state, { players }) {
@@ -40,8 +45,8 @@ export default {
     state.myLastWord = newWord
   },
 
-  saveStones (state, { stones, field }) {
-    const fieldIndex = state.fields.indexOf(field)
+  saveStones (state, { stones, fieldIndex }) {
+    if (fieldIndex == null || !state.fields[fieldIndex]) return
     state.stones[fieldIndex] = stones
   }
 }

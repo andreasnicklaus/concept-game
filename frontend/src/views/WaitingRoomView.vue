@@ -1,151 +1,168 @@
 <template>
-  <div v-if="$store.state.playerName && $store.state.roomCode" class="ma-4">
-    <v-container>
-      <v-row justify="space-between" align="center">
-        <h1>Warteraum ⌛</h1>
-        <v-btn
-          color="error"
-          variant="text"
-          append-icon="mdi-close-circle-outline"
-          @click="leave"
-          >Verlassen</v-btn
-        >
-      </v-row>
-    </v-container>
+  <div v-if="joined" class="waiting">
+    <header class="waiting__head">
+      <div>
+        <h1 class="waiting__title">Wer ist dabei?</h1>
+      </div>
+      <button class="btn btn--danger btn--sm" type="button" @click="leave">
+        Verlassen
+      </button>
+    </header>
 
-    <!-- INFO BAR -->
-    <div class="d-flex justify-space-between my-2">
-      <!-- PLAYER INFO -->
-      <v-card class="align-self-start">
-        <v-card-title>Dein Name</v-card-title>
-        <v-card-text>{{ $store.state.playerName }}</v-card-text>
-      </v-card>
+    <div class="waiting__grid">
+      <section aria-labelledby="players-title">
+        <h2 id="players-title" class="panel__title">
+          Spieler ({{ players.length }})
+        </h2>
 
-      <!-- ROOM CODE -->
-      <v-card class="align-self-start">
-        <v-card-title>Raumcode</v-card-title>
-        <v-card-text>{{ $store.state.roomCode }}</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            variant="outlined"
-            prepend-icon="mdi-clipboard-text-multiple"
-            @click="copyToClipboard"
-            >Kopieren</v-btn
-          >
-        </v-card-actions>
-      </v-card>
+        <ul v-if="players.length" class="player-list">
+          <li v-for="player in players" :key="player.name" class="player-row">
+            <span class="player-row__name">
+              <span class="player-chip__avatar" aria-hidden="true">{{ initial(player.name) }}</span>
+              <span>{{ player.name }}</span>
+              <span v-if="player.name === playerName" class="tag tag--muted">du</span>
+            </span>
+
+            <span class="player-row__actions">
+              <span v-if="player.name === playerName" class="tag" :class="player.ready ? 'tag--lime' : ''">
+                {{ player.ready ? 'bereit' : 'noch nicht bereit' }}
+              </span>
+              <span v-else class="tag" :class="player.ready ? 'tag--lime' : 'tag--muted'">
+                {{ player.ready ? 'bereit' : 'wartet' }}
+              </span>
+
+              <template v-if="player.name === playerName">
+                <button v-if="!player.ready" class="btn btn--quiet btn--sm" type="button" @click="readyUp">
+                  Bereit
+                </button>
+                <button v-else class="btn btn--quiet btn--sm" type="button" @click="unready">
+                  Nicht bereit
+                </button>
+              </template>
+            </span>
+          </li>
+        </ul>
+
+        <p v-else class="waiting__hint">
+          Noch niemand eingetragen. Sobald beigetreten wird, erscheinen die Namen hier.
+        </p>
+      </section>
+
+      <aside class="room-code" aria-labelledby="room-code-label">
+        <span id="room-code-label" class="room-code__label">Raumcode</span>
+        <p class="room-code__value">{{ roomCode }}</p>
+        <div class="room-code__actions">
+          <button class="btn btn--sm" type="button" @click="copyCode">Code kopieren</button>
+        </div>
+        <p class="room-code__note">
+          Schick den Code an alle, die mitspielen. Er gilt nur für diesen Raum.
+        </p>
+      </aside>
     </div>
 
-    <v-divider />
-
-    <!-- PLAYER LIST -->
-    <v-list>
-      <v-list-subheader>Spieler</v-list-subheader>
-      <v-list-item v-for="(player, i) in $store.state.players" :key="i">
-        <v-tooltip anchor="top">
-          <template v-slot:activator="{ props }">
-            <v-list-item-avatar start v-bind="props">
-              <v-icon
-                :color="player.ready ? 'success' : 'error'"
-                :icon="player.ready ? 'mdi-account-check' : 'mdi-account-alert'"
-              ></v-icon>
-            </v-list-item-avatar>
-          </template>
-          <span v-if="player.ready">{{ player.name }} ist bereit</span>
-          <span v-else>{{ player.name }} ist nicht bereit</span>
-        </v-tooltip>
-        <v-list-item-title :color="player.ready ? 'success' : 'error'">{{
-          player.name
-        }}</v-list-item-title>
-
-        <v-spacer></v-spacer>
-
-        <span v-if="player.name === $store.state.playerName">
-          <v-btn v-if="!player.ready" color="success" @click="readyUp"
-            >Bereit</v-btn
-          >
-          <v-btn v-else variant="plain" color="warning" @click="unready"
-            >Nicht bereit</v-btn
-          >
-        </span>
-      </v-list-item>
-    </v-list>
-
-    <v-divider />
-
-    <!-- GAME CONTROL -->
-    <div class="d-flex justify-end my-2">
-      <v-btn
-        color="success"
-        prepend-icon="mdi-arrow-right"
-        :disabled="!$store.getters.allPlayersReady"
-        @click="startGame"
-        >Spiel starten</v-btn
-      >
-    </div>
+    <footer class="waiting__foot">
+      <p class="waiting__hint">{{ hint }}</p>
+      <button class="btn btn--primary" type="button" :disabled="!allPlayersReady" @click="startGame">
+        Spiel starten
+      </button>
+    </footer>
   </div>
 
-  <div v-else id="roomNotInitialised">
-    <div class="ma-8">
-      <h1>Oops, das hat nicht funktioniert... 😥</h1>
-      <p>
-        This is supposed to be the waiting room, but something didn't work. Your
-        can try to fix this by starting over:
-      </p>
-      <p>
-        Das hier sollte der Warteraum sein, aber etwas hat nicht geklappt. Du
-        kannst einen Fix versuchen, indem du von Vorne anfängst:
-      </p>
-      <v-btn color="primary" class="ma-2" to="/" prepend-icon="mdi-arrow-right"
-        >Zurück</v-btn
-      >
-    </div>
-  </div>
+  <EmptyState
+    v-else-if="playerName"
+    inline
+    title="Raum wird geöffnet"
+    text="Einen Moment, die Verbindung zum Spiel wird aufgebaut."
+  >
+    <div class="spinner" aria-hidden="true" />
+    <span class="visually-hidden">Lädt</span>
+  </EmptyState>
+
+  <EmptyState
+    v-else
+    title="Der Raum fehlt noch"
+    text="Diese Seite ist der Warteraum, aber Name oder Raumcode sind nicht gesetzt. Starte von der Startseite ein neues Spiel oder tritt einem bei."
+  >
+    <RouterLink class="btn btn--primary" to="/">Zur Startseite</RouterLink>
+  </EmptyState>
 </template>
 
 <script>
-import gameService from "@/services/gameService";
+import gameService from '@/services/gameService'
+import EmptyState from '@/components/EmptyState.vue'
 
 export default {
-  name: "WaitingRoomView",
+  name: 'WaitingRoomView',
+
+  components: { EmptyState },
+
+  computed: {
+    playerName () {
+      return this.$store.state.playerName
+    },
+    roomCode () {
+      return this.$store.state.roomCode
+    },
+    players () {
+      return this.$store.state.players
+    },
+    joined () {
+      return Boolean(this.playerName && this.roomCode)
+    },
+    allPlayersReady () {
+      return this.$store.getters.allPlayersReady
+    },
+    hint () {
+      if (this.players.length < 2) {
+        return 'Teile den Raumcode, damit jemand beitreten kann.'
+      }
+      if (!this.allPlayersReady) {
+        return 'Es fehlen noch Bereitschaften. Jede Person meldet sich selbst bereit.'
+      }
+      return 'Alle sind bereit. Jemand kann das Spiel starten.'
+    }
+  },
 
   methods: {
-    copyToClipboard() {
-      navigator.clipboard.writeText(this.$store.state.roomCode);
-      this.$store.dispatch("snack", { message: "Zum Clipboard kopiert 👍" });
+    initial (name) {
+      return (name || '?').charAt(0).toUpperCase()
     },
 
-    readyUp() {
-      gameService.readyUp();
-    },
-    unready() {
-      gameService.unready();
+    copyCode () {
+      const code = this.roomCode
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(code).then(
+          () => this.$store.dispatch('snack', { message: 'Raumcode kopiert.' }),
+          () => this.copyFallback()
+        )
+        return
+      }
+      this.copyFallback()
     },
 
-    startGame() {
-      gameService.start();
-      this.$router.push("/gameRoom");
+    copyFallback () {
+      this.$store.dispatch('snack', {
+        message: 'Kopieren geht hier nicht. Markiere den Code und kopiere ihn von Hand.'
+      })
     },
 
-    leave() {
-      gameService.leave();
-      this.$router.push("/");
+    readyUp () {
+      gameService.readyUp()
     },
-  },
-};
+
+    unready () {
+      gameService.unready()
+    },
+
+    startGame () {
+      gameService.start()
+      this.$router.push('/gameRoom')
+    },
+
+    leave () {
+      gameService.leave()
+      this.$router.push('/')
+    }
+  }
+}
 </script>
-
-<style>
-h1 {
-  display: inline-block;
-}
-
-#roomNotInitialised {
-  display: grid;
-  place-items: center;
-  height: 100%;
-  text-align: center;
-}
-</style>

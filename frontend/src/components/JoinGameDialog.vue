@@ -1,25 +1,121 @@
 <template>
-  <v-card>
-    <v-card-title>Einem laufenden Spiel beitreten:</v-card-title>
-    <v-card-text>
-      <p>Um einem laufenden Spiel beizutreten, musst du dir selber einen Namen geben und den Raumcode angeben. Dein Name wird allen Spielern im Raum angezeigt. Du bekommst den Raumcode von Spielern, die bereits im Spielraum sind.</p>
+  <BaseDialog v-model="open" title="Spiel beitreten">
+    <form id="join-game-form" class="field" @submit.prevent="submit">
+      <label class="field__label" for="join-name">Dein Name</label>
+      <input
+        id="join-name"
+        v-model="name"
+        class="field__input"
+        name="playerName"
+        type="text"
+        autocomplete="nickname"
+        maxlength="20"
+        autofocus
+        :aria-invalid="showError && !validName"
+        aria-describedby="join-name-help"
+      />
+      <p id="join-name-help" class="field__help">So sehen dich die anderen im Raum.</p>
 
-      <div class="mt-4">
-        <v-text-field label="Dein Name" v-model="$store.state.playerName"></v-text-field>
-        <v-text-field label="Raumcode" v-model="$store.state.roomCode"></v-text-field>
-      </div>
-    </v-card-text>
+      <label class="field__label" for="join-code">Raumcode</label>
+      <input
+        id="join-code"
+        v-model="roomCode"
+        class="field__input"
+        name="roomCode"
+        type="text"
+        autocomplete="off"
+        autocapitalize="none"
+        spellcheck="false"
+        :aria-invalid="showError && !validCode"
+        aria-describedby="join-code-help"
+      />
+      <p id="join-code-help" class="field__help">
+        Den Code bekommst du von jemandem, der schon im Raum ist.
+      </p>
 
-    <v-card-actions>
-      <v-spacer/>
-      <v-btn color="primary" text @click="$emit('close')">Abbrechen</v-btn>
-      <v-btn color="primary" variant="contained" @click="$emit('join')" :disabled="$store.getters.joinInfoGiven">Beitreten</v-btn>
-    </v-card-actions>
-  </v-card>
+      <p v-if="showError && !valid" class="field__error" role="alert">
+        Name und Raumcode fehlen noch.
+      </p>
+    </form>
+
+    <template #actions>
+      <button class="btn btn--quiet" type="button" @click="close">Abbrechen</button>
+      <button class="btn btn--primary" type="submit" form="join-game-form" :disabled="!valid">
+        Beitreten
+      </button>
+    </template>
+  </BaseDialog>
 </template>
 
 <script>
+import BaseDialog from './BaseDialog.vue'
+
 export default {
-  name: "JoinGameDialog"
+  name: 'JoinGameDialog',
+
+  components: { BaseDialog },
+
+  props: {
+    modelValue: { type: Boolean, default: false }
+  },
+
+  emits: ['update:modelValue', 'join'],
+
+  data () {
+    return {
+      showError: false
+    }
+  },
+
+  computed: {
+    open: {
+      get () {
+        return this.modelValue
+      },
+      set (value) {
+        this.$emit('update:modelValue', value)
+      }
+    },
+    name: {
+      get () {
+        return this.$store.state.playerName
+      },
+      set (value) {
+        this.$store.commit('setPlayerName', value)
+      }
+    },
+    roomCode: {
+      get () {
+        return this.$store.state.roomCode
+      },
+      set (value) {
+        this.$store.commit('setRoomCode', { roomCode: value })
+      }
+    },
+    validName () {
+      return this.name.trim().length > 0
+    },
+    validCode () {
+      return this.roomCode.trim().length > 0
+    },
+    valid () {
+      return this.validName && this.validCode
+    }
+  },
+
+  methods: {
+    close () {
+      this.showError = false
+      this.open = false
+    },
+    submit () {
+      this.showError = true
+      if (!this.valid) return
+      this.$store.commit('setPlayerName', this.name.trim())
+      this.$store.commit('setRoomCode', { roomCode: this.roomCode.trim() })
+      this.open = false
+      this.$emit('join')
+    }
+  }
 }
 </script>
