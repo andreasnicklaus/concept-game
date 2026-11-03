@@ -9,27 +9,9 @@
       </RouterLink>
 
       <nav class="app-nav" aria-label="Hauptnavigation">
-        <RouterLink to="/" class="nav-link">Start</RouterLink>
         <RouterLink to="/instructions" class="nav-link">Anleitung</RouterLink>
-        <RouterLink to="/about" class="nav-link">Über</RouterLink>
       </nav>
-
-      <button
-        class="btn btn--quiet btn--sm menu-btn"
-        type="button"
-        :aria-expanded="drawer"
-        aria-controls="mobile-nav"
-        @click="drawer = !drawer"
-      >
-        Menü
-      </button>
     </header>
-
-    <nav v-if="drawer" id="mobile-nav" class="mobile-nav" aria-label="Hauptnavigation">
-      <RouterLink to="/" class="nav-link" @click="drawer = false">Start</RouterLink>
-      <RouterLink to="/instructions" class="nav-link" @click="drawer = false">Anleitung</RouterLink>
-      <RouterLink to="/about" class="nav-link" @click="drawer = false">Über</RouterLink>
-    </nav>
 
     <main id="main" class="app-main" tabindex="-1">
       <RouterView />
@@ -50,7 +32,6 @@ export default {
 
   data () {
     return {
-      drawer: false,
       toastTimer: null
     }
   },
