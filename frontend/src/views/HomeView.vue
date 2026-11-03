@@ -1,19 +1,37 @@
 <template>
-  <v-container id="HomeView">
-    <v-col class="d-flex flex-column">
-      <v-btn color="primary" prepend-icon="mdi-send" class="ma-2 align-self-center" @click="startDialog = true">Neues Spiel starten</v-btn>
-      <v-btn variant="contained-text" color="primary" prepend-icon="mdi-account-multiple-plus" class="ma-2 align-self-center" @click="joinDialog = true">Beitreten</v-btn>
-      <v-btn variant="contained-flat" color="" prepend-icon="mdi-help-circle" class="ma-2 align-self-center" to="/instructions">Anleitung</v-btn>
-    </v-col>
-  </v-container>
+  <div class="home">
+    <section class="home__intro">
+      <h1 class="home__title">Ein Wort. Viele Hinweise.</h1>
+      <p class="home__lead">
+        Eine Person legt Steine auf Begriffsfelder, alle anderen raten. Kein
+        Bildschirm teilen, kein Reden nötig, nur ein Gerät pro Person.
+      </p>
 
-  <v-dialog v-model="startDialog" width="500">
-    <StartGameDialog @close="startDialog=false" @start="startGame"></StartGameDialog>
-  </v-dialog>
+      <div class="home__actions">
+        <button class="btn btn--primary" type="button" @click="startDialog = true">
+          Neues Spiel starten
+        </button>
+        <button class="btn" type="button" @click="joinDialog = true">
+          Spiel beitreten
+        </button>
+      </div>
 
-  <v-dialog v-model="joinDialog" width="500">
-    <JoinGameDialog @close="joinDialog = false" @join="joinGame"></JoinGameDialog>
-  </v-dialog>
+      <p class="home__note">
+        Du kennst das Spiel noch nicht?
+        <RouterLink class="text-link" to="/instructions">Die Anleitung erklärt es in zwei Minuten.</RouterLink>
+      </p>
+    </section>
+
+    <div class="home__board" role="img" :aria-label="previewLabel">
+      <div v-for="field in preview" :key="field.index" class="home__tile">
+        <img :src="`/fieldIMGs/${field.img_src}.png`" alt="" width="44" height="44" loading="lazy" />
+        <span>{{ field.names[0] }}</span>
+      </div>
+    </div>
+  </div>
+
+  <StartGameDialog v-model="startDialog" @start="startGame" />
+  <JoinGameDialog v-model="joinDialog" @join="joinGame" />
 </template>
 
 <script>
@@ -36,27 +54,31 @@ export default {
     }
   },
 
+  computed: {
+    preview () {
+      return this.$store.state.fields
+        .map((field, index) => ({ ...field, index }))
+        .filter(field => field.img_src)
+        .slice(0, 6)
+    },
+    previewLabel () {
+      return `Sechs Begriffsfelder aus dem Spiel: ${this.preview.map(field => field.names[0]).join(', ')}.`
+    }
+  },
+
   methods: {
     startGame () {
       this.startDialog = false
+      this.$store.commit('setRoomCode', { roomCode: '' })
       gameService.join()
-      this.$router.push("/waitingRoom")
+      this.$router.push('/waitingRoom')
     },
 
     joinGame () {
       this.joinDialog = false
       gameService.join()
-      this.$router.push("/waitingRoom")
+      this.$router.push('/waitingRoom')
     }
   }
-
 }
 </script>
-
-<style>
-#HomeView {
-  height: 99%;
-  display: grid;
-  place-items: center;
-}
-</style>

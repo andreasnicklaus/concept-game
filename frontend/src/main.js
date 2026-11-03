@@ -3,9 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
-import { loadFonts } from './plugins/webfontloader'
-
-loadFonts()
+import './styles/app.css'
 
 createApp(App)
   .use(router)

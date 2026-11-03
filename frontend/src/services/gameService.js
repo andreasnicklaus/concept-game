@@ -69,7 +69,6 @@ class GameService {
       switch (type) {
         case "nextWord": {
           const { word } = data
-          console.log("NEXTWORD:", word)
           store.commit('setMyLastWord', word)
           store.commit('setYourTurnDialogOpen', true)
           break
@@ -80,7 +79,7 @@ class GameService {
           break
         }
         case "gameStart": {
-          router.push('/gameroom')
+          router.push('/gameRoom')
           break
         }
         default:

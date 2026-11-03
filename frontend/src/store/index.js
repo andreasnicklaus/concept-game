@@ -3,19 +3,39 @@ import mutations from './mutations'
 import actions from './actions'
 import fields from './fields.json'
 
+const STONE_COLORS = ['green', 'black', 'blue', 'red', 'yellow']
+
+function emptyStones () {
+  return STONE_COLORS.reduce((stones, color) => {
+    stones[color] = { major: false, minors: 0 }
+    return stones
+  }, {})
+}
+
+function cloneStones (stones) {
+  return STONE_COLORS.reduce((copy, color) => {
+    const stone = stones?.[color]
+    copy[color] = {
+      major: Boolean(stone?.major),
+      minors: Number(stone?.minors) || 0
+    }
+    return copy
+  }, {})
+}
+
 export default createStore({
   state: {
     fields,
     snackbar: {
       show: false,
-      text: "No Text defined"
+      text: 'Keine Meldung'
     },
-    playerName: "",
-    roomCode: "",
+    playerName: '',
+    roomCode: '',
     players: [],
     currentPlayerIndex: 0,
     messages: [],
-    myLastWord: "",
+    myLastWord: '',
     yourTurnDialogOpen: false,
     stones: {}
   },
@@ -25,11 +45,11 @@ export default createStore({
     },
 
     getCurrentPlayer (state) {
-      return state.players[state.currentPlayerIndex]
+      return state.players[state.currentPlayerIndex] || null
     },
 
     allPlayersReady (state) {
-      return state.players.every(player => player.ready)
+      return state.players.length > 0 && state.players.every(player => player.ready)
     },
 
     joinInfoGiven (state) {
@@ -37,34 +57,34 @@ export default createStore({
     },
 
     isMyTurn (state) {
-      return state.players[state.currentPlayerIndex].name === state.playerName
+      const current = state.players[state.currentPlayerIndex]
+      return Boolean(current && current.name === state.playerName)
     },
 
     getStonesForField: (state) => (field) => {
-      const givenStones = state.stones[state.fields.indexOf(field)]
-      return givenStones || {
-        green: { major: false, minors: 0 },
-        black: { major: false, minors: 0 },
-        blue: { major: false, minors: 0 },
-        red: { major: false, minors: 0 },
-        yellow: { major: false, minors: 0 }
-      }
+      const index = field?.index ?? state.fields.indexOf(field)
+      const givenStones = state.stones[index]
+      return givenStones ? cloneStones(givenStones) : emptyStones()
     },
 
     fieldsWithStones (state) {
-      const fieldsCopy = state.fields
-      for (const fieldIndex in Object.keys(state.stones)) {
-        fieldsCopy[fieldIndex].stones = state.stones[fieldIndex]
-      }
-      return fieldsCopy
+      return state.fields.map((field, index) => ({
+        ...field,
+        index,
+        stones: cloneStones(state.stones[index])
+      }))
     },
 
     fieldsWithStonesSet (state) {
-      const fieldsCopy = state.fields
-      for (const fieldIndex in Object.keys(state.stones)) {
-        fieldsCopy[fieldIndex].stones = state.stones[fieldIndex]
-      }
-      return Object.keys(state.stones).map(i => fieldsCopy[i])
+      return Object.keys(state.stones)
+        .map(Number)
+        .filter(index => state.fields[index])
+        .sort((a, b) => a - b)
+        .map(index => ({
+          ...state.fields[index],
+          index,
+          stones: cloneStones(state.stones[index])
+        }))
     }
   },
 
