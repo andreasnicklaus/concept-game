@@ -33,6 +33,6 @@
     "eslint-plugin-n": "18.5.0",
     "eslint-plugin-promise": "7.3.0",
     "sass": "1.106.1",
-    "sass-loader": "17.0.1"
+    "sass-loader": "17.1.0"
   }
 }
